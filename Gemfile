@@ -14,6 +14,7 @@ gem "rails", "~> 5.2.0"
 gem "sass-rails", "~> 5.0"
 gem "turbolinks", "~> 5"
 gem "uglifier", ">= 1.3.0"
+gem "sidekiq", "~> 5.2", ">= 5.2.3"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
