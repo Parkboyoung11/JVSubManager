@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     post "login", to: "sessions#create"
     delete "logout", to: "sessions#destroy"
     resources :admins
-    post "/signup",  to: "users#create"
+    get "/signup",  to: "users#create"
     post "/signin", to: "users#signin"
     get "/active_account", to: "users#activeAccount", as: "active_account"
   end
