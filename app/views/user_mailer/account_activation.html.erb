@@ -1,0 +1,10 @@
+<h1>AnimeJVSub App</h1>
+
+<p>Hi <%= @user.username %>,</p>
+
+<p>
+  Welcome to the AnimeJVSub App! Click on the link below to activate your account:
+</p>
+
+<%= link_to "Activate", active_account_url(activation_token: @user.activation_token,
+                                                    email: @user.email) %>
