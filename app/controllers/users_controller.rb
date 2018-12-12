@@ -30,13 +30,24 @@ class UsersController < ApplicationController
     user = User.find_by username: params[:user][:username]
     if user&.authenticate(params[:user][:password])
       api_key = user.api_key
-      respond_to do |format|
-        format.json do
-          render json: {
-              status: 200,
-              api_key: api_key,
-              message: "Sign in successfully"
-          }.to_json
+      if api_key.present?
+        respond_to do |format|
+          format.json do
+            render json: {
+                status: 200,
+                api_key: api_key,
+                message: "Sign in successfully"
+            }.to_json
+          end
+        end
+      else
+        respond_to do |format|
+          format.json do
+            render json: {
+                status: 500,
+                message: "Account not active. Check mail!"
+            }.to_json
+          end
         end
       end
     else
