@@ -5,7 +5,7 @@ class MoviesController < ApplicationController
     language = params[:sub]
     newAnimes = Movie.where(language: language).order(created_at: :desc).limit(Settings.number_list_anime)
     trendAnimes = Movie.where(language: language).order(views: :desc).limit(Settings.number_list_anime)
-    randomAnimes = Movie.where(language: language).order(Settings.random_function).limit(Settings.number_list_anime)
+    randomAnimes = Movie.where(language: language).order(created_at: :desc).offset(Settings.number_list_anime).limit(Settings.number_list_anime)
 
     if params[:key] && user = User.find_by(api_key: params[:key])
       user_id = user.id
