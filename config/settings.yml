@@ -2,3 +2,6 @@ name_maximum: 50
 email_maximun: 255
 pass_minimun: 6
 img_size: 80
+random_function: "RAND()"
+random_function_postgre: "RANDOM()"
+number_list_anime: 10

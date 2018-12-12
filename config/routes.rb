@@ -8,5 +8,9 @@ Rails.application.routes.draw do
     post "/signup",  to: "users#create"
     post "/signin", to: "users#signin"
     get "/active_account", to: "users#activeAccount", as: "active_account"
+    get "/list", to: "movies#getAnimeList"
+    get "/addToMovie", to: "movies#createDB"
+    get "/like", to: "movies#favoriteHanding"
+    get "/favorite", to: "movies#getFavoriteList"
   end
 end
