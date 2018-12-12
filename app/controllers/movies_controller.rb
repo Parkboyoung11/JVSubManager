@@ -78,6 +78,29 @@ class MoviesController < ApplicationController
     end
   end
 
+  def getMoreList
+    language = params[:sub]
+    offset = Settings.number_list_anime * (params[:page].to_i + 2)
+    moreAnimes = Movie.where(language: language).order(created_at: :desc).offset(offset).limit(Settings.number_list_anime)
+
+    if params[:key] && user = User.find_by(api_key: params[:key])
+      user_id = user.id
+      moreAnimesArray = refactorArrayWithKey(moreAnimes, user_id)
+    else
+      moreAnimesArray = refactorArrayNoKey(moreAnimes)
+    end
+
+    jsonAnimeList = moreAnimesArray.to_json
+    respond_to do |format|
+      format.json do
+        render json: jsonAnimeList
+      end
+      format.html do
+        render html: jsonAnimeList
+      end
+    end
+  end
+
   def refactorArrayWithKey(originArray, user_id)
     newArray = originArray.map do |u|
       if Favorite.where(:user_id => user_id, :movie_id => u.id).any?
