@@ -53,8 +53,24 @@ class MoviesController < ApplicationController
       user_id = user.id
       if like == "true"
         Favorite.create(user_id: user_id, movie_id: movie_id)
+        respond_to do |format|
+          format.json do
+            render json: {
+                id: movie_id,
+                liked: :true
+            }.to_json
+          end
+        end
       else like == "false"
         Favorite.where(user_id: user_id, movie_id: movie_id).destroy_all
+        respond_to do |format|
+          format.json do
+            render json: {
+                id: movie_id,
+                liked: :false
+            }.to_json
+          end
+        end
       end
     end
   end

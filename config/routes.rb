@@ -13,5 +13,7 @@ Rails.application.routes.draw do
     get "/like", to: "movies#favoriteHanding"
     get "/favorite", to: "movies#getFavoriteList"
     get "/more", to: "movies#getMoreList"
+    get "/episodes", to: "episodes#getEpisodes"
+    get "/addToEpisode", to: "episodes#createEpisode"
   end
 end
