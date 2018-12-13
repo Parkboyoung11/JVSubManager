@@ -119,7 +119,7 @@ class MoviesController < ApplicationController
 
   def searchAnime
     language = params[:sub]
-    searchAnimes = Movie.where("lower(name) LIKE ?", "%#{params[:name].downcase}%").where(language: language).limit(Settings.number_list_anime)
+    searchAnimes = Movie.where("lower(name) LIKE ? OR lower(description) LIKE ? ", "%#{params[:name].downcase}%", "%#{params[:name].downcase}%").where(language: language).limit(Settings.number_list_anime)
 
     if params[:key] && user = User.find_by(api_key: params[:key])
       user_id = user.id
