@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_many :favorites, dependent: :destroy
   has_many :movies, through: :favorites, dependent: :destroy
+  has_many :histories, dependent: :destroy
+  has_many :movies, through: :histories, dependent: :destroy
   has_many :watchings, dependent: :destroy
   has_many :episodes, through: :watchings, dependent: :destroy
   before_save{email.downcase!}

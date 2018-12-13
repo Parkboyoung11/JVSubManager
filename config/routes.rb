@@ -16,5 +16,6 @@ Rails.application.routes.draw do
     get "/episodes", to: "episodes#getEpisodes"
     get "/addToEpisode", to: "episodes#createEpisode"
     get "/search", to: "movies#searchAnime"
+    get "/watching", to: "episodes#setWatchedTime"
   end
 end

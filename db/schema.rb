@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_12_153210) do
+ActiveRecord::Schema.define(version: 2018_12_13_160438) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
@@ -39,6 +39,16 @@ ActiveRecord::Schema.define(version: 2018_12_12_153210) do
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
+  create_table "histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "movie_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_histories_on_movie_id"
+    t.index ["user_id", "movie_id"], name: "index_histories_on_user_id_and_movie_id", unique: true
+    t.index ["user_id"], name: "index_histories_on_user_id"
+  end
+
   create_table "movies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description", limit: 5000
     t.string "image", limit: 100
@@ -63,7 +73,7 @@ ActiveRecord::Schema.define(version: 2018_12_12_153210) do
   create_table "watchings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.integer "episode_id"
-    t.integer "seconds"
+    t.integer "seconds", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["episode_id"], name: "index_watchings_on_episode_id"
