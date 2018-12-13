@@ -15,5 +15,6 @@ Rails.application.routes.draw do
     get "/more", to: "movies#getMoreList"
     get "/episodes", to: "episodes#getEpisodes"
     get "/addToEpisode", to: "episodes#createEpisode"
+    get "/search", to: "movies#searchAnime"
   end
 end

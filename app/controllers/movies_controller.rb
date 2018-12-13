@@ -117,6 +117,28 @@ class MoviesController < ApplicationController
     end
   end
 
+  def searchAnime
+    language = params[:sub]
+    searchAnimes = Movie.where("name LIKE ?", "%#{params[:name]}%").where(language: language).limit(Settings.number_list_anime)
+
+    if params[:key] && user = User.find_by(api_key: params[:key])
+      user_id = user.id
+      searchAnimesArray = refactorArrayWithKey(searchAnimes, user_id)
+    else
+      searchAnimesArray = refactorArrayNoKey(searchAnimes)
+    end
+
+    searchAnimesList = searchAnimesArray.to_json
+    respond_to do |format|
+      format.json do
+        render json: searchAnimesList
+      end
+      format.html do
+        render html: searchAnimesList
+      end
+    end
+  end
+
   def refactorArrayWithKey(originArray, user_id)
     newArray = originArray.map do |u|
       if Favorite.where(:user_id => user_id, :movie_id => u.id).any?
