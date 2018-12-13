@@ -119,7 +119,7 @@ class MoviesController < ApplicationController
 
   def searchAnime
     language = params[:sub]
-    searchAnimes = Movie.where("name LIKE ?", "%#{params[:name]}%").where(language: language).limit(Settings.number_list_anime)
+    searchAnimes = Movie.where("lower(name) LIKE ?", "%#{params[:name].downcase}%").where(language: language).limit(Settings.number_list_anime)
 
     if params[:key] && user = User.find_by(api_key: params[:key])
       user_id = user.id
@@ -144,7 +144,7 @@ class MoviesController < ApplicationController
       if Favorite.where(:user_id => user_id, :movie_id => u.id).any?
         { :id => u.id, :description => u.description, :image => u.image, :name => u.name, :liked => :true }
       else
-        { :id => u.id, :description => u.description, :image => u.image, :name => u.name, :liked => :flase }
+        { :id => u.id, :description => u.description, :image => u.image, :name => u.name, :liked => :false }
       end
     end
     return newArray
@@ -152,7 +152,7 @@ class MoviesController < ApplicationController
 
   def refactorArrayNoKey originArray
     newArray = originArray.map do |u|
-        { :id => u.id, :description => u.description, :image => u.image, :name => u.name, :liked => :flase }
+        { :id => u.id, :description => u.description, :image => u.image, :name => u.name, :liked => :false }
     end
     return newArray
   end
