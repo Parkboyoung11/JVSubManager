@@ -18,6 +18,9 @@ class EpisodesController < ApplicationController
     end
 
     jsonEpisodeList = newArray.to_json
+
+    Movie.find_by(id: movie_id).increment!(:views)
+
     respond_to do |format|
       format.json do
         render json: jsonEpisodeList
