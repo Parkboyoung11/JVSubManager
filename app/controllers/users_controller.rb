@@ -62,6 +62,40 @@ class UsersController < ApplicationController
     end
   end
 
+  def changepassword
+    user = User.find_by(username: params[:user][:username])
+    if user&.authenticate(params[:user][:old_password])
+      if user.update_attributes(params.require(:user).permit(:password, :password_confirmation))
+        respond_to do |format|
+          format.json do
+            render json: {
+                status: 200,
+                username: params[:user][:username]
+            }.to_json
+          end
+        end
+      else
+        respond_to do |format|
+          format.json do
+            render json: {
+                status: 500,
+                username: params[:user][:username]
+            }.to_json
+          end
+        end
+      end
+    else
+      respond_to do |format|
+        format.json do
+          render json: {
+              status: 500,
+              username: params[:user][:username]
+          }.to_json
+        end
+      end
+    end
+  end
+
   def activeAccount
     user = User.find_by email: params[:email]
     activation_token = params[:activation_token]
