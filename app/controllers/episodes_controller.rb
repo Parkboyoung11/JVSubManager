@@ -76,6 +76,8 @@ class EpisodesController < ApplicationController
   def createEpisode
     episode = Episode.new(episode_params)
     if episode.save
+      movie_id = params[:movie_id]
+      Movie.find_by(id: movie_id).touch
       respond_to do |format|
         format.html do
           render html: "xong eposide"

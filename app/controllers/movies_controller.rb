@@ -3,9 +3,9 @@ class MoviesController < ApplicationController
 
   def getAnimeList
     language = params[:sub]
-    newAnimes = Movie.where(language: language).order(created_at: :desc).limit(Settings.number_list_anime)
+    newAnimes = Movie.where(language: language).order(updated_at: :desc).limit(Settings.number_list_anime)
     trendAnimes = Movie.where(language: language).order(views: :desc).limit(Settings.number_list_anime)
-    randomAnimes = Movie.where(language: language).order(created_at: :desc).offset(Settings.number_list_anime).limit(Settings.number_list_anime)
+    randomAnimes = Movie.where(language: language).order(updated_at: :desc).offset(Settings.number_list_anime).limit(Settings.number_list_anime)
 
     if params[:key] && user = User.find_by(api_key: params[:key])
       user_id = user.id
@@ -97,7 +97,7 @@ class MoviesController < ApplicationController
   def getMoreList
     language = params[:sub]
     offset = Settings.number_list_anime * (params[:page].to_i + 2)
-    moreAnimes = Movie.where(language: language).order(created_at: :desc).offset(offset).limit(Settings.number_list_anime)
+    moreAnimes = Movie.where(language: language).order(updated_at: :desc).offset(offset).limit(Settings.number_list_anime)
 
     if params[:key] && user = User.find_by(api_key: params[:key])
       user_id = user.id
