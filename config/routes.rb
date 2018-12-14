@@ -5,8 +5,10 @@ Rails.application.routes.draw do
     post "login", to: "sessions#create"
     delete "logout", to: "sessions#destroy"
     resources :admins
+    get "/home", to: "admins#show", as: "home"
     post "/signup",  to: "users#create"
     post "/signin", to: "users#signin"
+    post "/changepassword", to: "users#changepassword"
     get "/active_account", to: "users#activeAccount", as: "active_account"
     get "/list", to: "movies#getAnimeList"
     get "/addToMovie", to: "movies#createDB"
