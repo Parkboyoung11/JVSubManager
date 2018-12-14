@@ -1,7 +1,7 @@
 class EpisodesController < ApplicationController
   def getEpisodes
     movie_id = params[:movie_id]
-    episodeSArray = Episode.where(movie_id: movie_id)
+    episodeSArray = Episode.where(movie_id: movie_id).order(movie_id: :asc)
     if user = User.find_by(api_key: params[:key])
       user_id = user.id
       newArray = episodeSArray.map do |u|
