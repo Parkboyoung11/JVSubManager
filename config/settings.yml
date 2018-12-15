@@ -5,3 +5,10 @@ img_size: 80
 random_function: "RAND()"
 random_function_postgre: "RANDOM()"
 number_list_anime: 10
+menubar:
+  version: "1.0"
+  copy_right: "@JVSUB_TEAM"
+appName: "AnimeJVSub"
+movies_per_page: 8
+users_per_page: 15
+

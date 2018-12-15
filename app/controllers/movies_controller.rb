@@ -1,6 +1,52 @@
 class MoviesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def index
+    @movies = Movie.all
+  end
+
+  def new
+    @movie = Movie.new
+  end
+
+  def create
+    if current_admin.present?
+      movie = Movie.new(movie_origin_params)
+      if movie.save
+        flash[:success] = "Create Movie Success"
+        redirect_to movies_url
+      else
+        flash[:error] = "Some field invalid"
+        render :new
+      end
+    end
+  end
+
+  def edit
+    @movie = Movie.find(params[:id])
+  end
+
+  def update
+    if current_admin.present?
+      @movie = Movie.find(params[:id])
+      if @movie.update_attributes(movie_origin_params)
+        flash[:success] = "Update Successfully"
+        render :edit
+      else
+        flash[:error] = "Error"
+        render :edit
+      end
+    end
+  end
+
+  def destroy
+    if current_admin.present?
+      Movie.find(params[:id]).destroy
+      flash[:success] = "Movie Deleted"
+      redirect_to movies_url
+    end
+  end
+
   def getAnimeList
     language = params[:sub]
     newAnimes = Movie.where(language: language).order(updated_at: :desc).limit(Settings.number_list_anime)
@@ -26,23 +72,6 @@ class MoviesController < ApplicationController
         format.html do
           render html: jsonAnimeList
         end
-    end
-  end
-
-  def createDB
-    movie = Movie.new(movie_params)
-    if movie.save
-      respond_to do |format|
-        format.html do
-          render html: "xong"
-        end
-      end
-    else
-      respond_to do |format|
-        format.html do
-          render html: "loi!"
-        end
-      end
     end
   end
 
@@ -165,8 +194,7 @@ class MoviesController < ApplicationController
   end
 
   private
-
-  def movie_params
-    params.permit(:name, :description, :image, :language)
+  def movie_origin_params
+    params.require(:movie).permit(:name, :description, :image, :language)
   end
 end

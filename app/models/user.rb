@@ -28,4 +28,8 @@ class User < ApplicationRecord
     update_attribute(:activation_token, activation_token)
   end
 
+  def isAdmin
+    return Admin.where(:name => self.username).any?
+  end
+
 end

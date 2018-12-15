@@ -1,23 +1,54 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= full_title(yield :title) %></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AnimeJVSub Admin</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
-    <%= render "layouts/shim" %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <%= yield :customcss %>
   </head>
 
-  <body>
-    <div class="container">
-      <% flash.each do |message_type, message| %>
-        <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
-      <% end %>
-      <%= render "layouts/header" %>
-      <%= yield %>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+      <%= render "layouts/header" if current_admin.present? %>
+      <%= render "layouts/leftbar" if current_admin.present? %>
+      <div class="content-wrapper">
+        <section class="content-header " style="margin-bottom: 10px;">
+          <h1>
+            <%= yield :page_name %>
+          </h1>
+          <% flash.each do |message_type, message| %>
+            <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
+          <% end %>
+          <%= yield %>
+        </section>
+
+      </div>
       <%= render "layouts/footer" %>
-      <%= debug(params) if Rails.env.development? %>
+      <div class="control-sidebar-bg"></div>
     </div>
+    <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <%= yield :customscript %>
+    <script>
+        $(document).ready(function () {
+            $('#listtable').DataTable({
+            });
+        });
+    </script>
   </body>
 </html>

@@ -8,8 +8,7 @@ module SessionsHelper
   end
 
   def log_out
-    forget current_admin
-    session.delete :admin_id
+    session.delete(:admin_id)
     @current_admin = nil
   end
 
@@ -17,5 +16,10 @@ module SessionsHelper
     if admin_id = session[:admin_id]
       @current_admin ||= Admin.find_by id: admin_id
     end
+  end
+
+
+  def current_admin?(admin)
+    admin == current_admin
   end
 end

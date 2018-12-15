@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def index
+    @users = User.all
+  end
+
   def create
     user = User.new(user_params)
     if user.save
@@ -23,6 +27,17 @@ class UsersController < ApplicationController
           }.to_json
         end
       end
+    end
+  end
+
+  def update
+    if current_admin.present?
+      user = User.find(params[:id])
+      name = user.username
+      password = SecureRandom.urlsafe_base64
+      Admin.create(name: name, password: password, password_confirmation: password)
+      flash[:success] = "Change user to Admin. New password: #{password}"
+      redirect_to users_url
     end
   end
 

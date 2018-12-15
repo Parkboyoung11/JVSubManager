@@ -1,0 +1,26 @@
+<% content_for :page_name do %>
+  Movie Manager
+  <a href="<%= movie_episodes_url(@movie.id) %>"><button type="button" class="btn btn-primary">Eposide List</button></a>
+<% end %>
+<div class="container">
+  <%= form_for @movie, multipart: true do |f| %>
+    <legend>Edit Movie</legend>
+    <div class="form-group">
+      <%= f.label :language, "Language "%>
+      <%= f.select :language, ["VI", "JP"], class: "form-control", required: true   %>
+    </div>
+    <div class="form-group">
+      <%= f.label :name, "Name"%>
+      <%= f.text_field :name, class: "form-control", required: true  %>
+    </div>
+    <div class="form-group">
+      <%= f.label :description, "Description"%>
+      <%= f.text_area :description, class: "form-control", rows: 5, required: true  %>
+    </div>
+    <div class="form-group">
+      <%= f.label :image, "Image Link"%>
+      <%= f.text_field :image, class: "form-control", required: true  %>
+    </div>
+    <%= f.submit "Update", class: "btn btn-primary", style: "margin-bottom: 20px"%>
+  <% end %>
+</div>

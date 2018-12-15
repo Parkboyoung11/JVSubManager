@@ -1,0 +1,45 @@
+<% content_for :page_name do %>
+  Episode Manager
+  <a href="<%= new_movie_episode_url(@movie_id) %>"><button type="button" class="btn btn-primary">Create New</button></a>
+<% end %>
+
+<div class="container">
+  <table id="listtable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+      <th class="th-sm">Name
+        <i class="fa fa-sort float-right" aria-hidden="true"></i>
+      </th>
+      <th class="th-sm">Movie
+        <i class="fa fa-sort float-right" aria-hidden="true"></i>
+      </th>
+      <th class="th-sm">Preview
+        <i class="fa fa-sort float-right" aria-hidden="true"></i>
+      </th>
+      <th class="th-sm" style="width: 120px">Action
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @episodes.each do |episode| %>
+      <tr>
+        <td><%= episode.name %></td>
+        <td><%= episode.movie.name %></td>
+        <td>
+          <img src="<%= episode.image %>" width="200">
+        </td>
+        <td>
+          <% if current_admin.present? %>
+            <a href="<%= edit_movie_episode_url(@movie_id, episode.id) %>" type="button" class="btn btn-info">Update</a>
+            <%= link_to "Delete", episode, method: :delete, data: { confirm: "You sure?" }, class: "btn btn-danger" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+</div>
+<% content_for :customscript do %>
+
+<% end %>

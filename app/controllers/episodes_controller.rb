@@ -1,4 +1,57 @@
 class EpisodesController < ApplicationController
+  def index
+    @movie_id = params[:movie_id]
+    @episodes = Episode.where(movie_id: @movie_id)
+    render "movies/episodes/index"
+  end
+
+  def new
+    @episode = Episode.new
+    @movie_id = params[:movie_id]
+    render "movies/episodes/new"
+  end
+
+  def create
+    if current_admin.present?
+      episode = Episode.new(episode_params_origin)
+      if episode.save
+        flash[:success] = "Create Episode Success"
+        redirect_to movie_episodes_url(params[:episode][:movie_id])
+      else
+        flash[:error] = "Some field invalid"
+        render "movies/episodes/new"
+      end
+    end
+  end
+
+  def edit
+    @episode = Episode.find(params[:id])
+    render "movies/episodes/edit"
+  end
+
+  def update
+    if current_admin.present?
+      @episode = Episode.find(params[:id])
+      if @episode.update_attributes(episode_params_origin)
+        flash[:success] = "Update Successfully"
+      else
+        flash[:error] = "Error"
+      end
+
+      render "movies/episodes/edit"
+    end
+  end
+
+  def destroy
+    if current_admin.present?
+      episode = Episode.find(params[:id])
+      movie_id = episode.movie_id
+      episode.destroy
+      flash[:success] = "Movie Deleted"
+      redirect_to  movie_episodes_url(movie_id)
+    end
+  end
+
   def getEpisodes
     movie_id = params[:movie_id]
     episodeSArray = Episode.where(movie_id: movie_id).order(movie_id: :asc)
@@ -76,28 +129,9 @@ class EpisodesController < ApplicationController
     end
   end
 
-  def createEpisode
-    episode = Episode.new(episode_params)
-    if episode.save
-      movie_id = params[:movie_id]
-      Movie.find_by(id: movie_id).touch
-      respond_to do |format|
-        format.html do
-          render html: "xong eposide"
-        end
-      end
-    else
-      respond_to do |format|
-        format.html do
-          render html: "loi!"
-        end
-      end
-    end
-  end
-
   private
 
-  def episode_params
-    params.permit(:movie_id, :name, :image, :video)
+  def episode_params_origin
+    params.require(:episode).permit(:movie_id, :name, :image, :video)
   end
 end

@@ -1,21 +1,22 @@
 class AdminsController < ApplicationController
-  def create
-    @admin = Admin.new admin_params
-    if @admin.save
-      flash[:success] = t "Welcome"
-      redirect_to root_url
-    else
-      flash[:danger] = t "error"
-      redirect_to root_url
-    end
+  def edit
+    @admin = Admin.find(params[:id])
   end
 
-  def show
-    @admin = Admin.find_by id: params[:id]
-
-    return if @admin
-    flash[:success] = t "error"
-    redirect_to root_url
+  def update
+    @admin = Admin.find(params[:id])
+    if @admin&.authenticate(params[:admin][:current_password])
+      if @admin.update_attributes(params.require(:admin).permit(:password, :password_confirmation))
+        flash[:success] = "Change Password Successfully"
+        redirect_to @admin
+      else
+        flash[:error] = "Change Password Failed"
+        render :edit
+      end
+    else
+      flash[:error] = "Current Password Invalid"
+      render :edit
+    end
   end
 
   private

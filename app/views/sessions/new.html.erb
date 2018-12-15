@@ -1,10 +1,17 @@
-<%= form_for :session, url: login_path, html: {class: "form-signin"} do |f| %>
-  <h1 class="h3 mb-3 font-weight-normal"><%= t "welcome" %></h1>
-  <%= f.label :name, (t "username"), class: "sr-only" %>
-  <%= f.text_field :name, class: "form-control",
-                    placeholder: (t "username_p"), required: true  %>
-  <%= f.label :password, (t "pass"), class: "sr-only" %>
-  <%= f.password_field :password, class: "form-control",
-                        placeholder: (t "pass_p"), required: true  %>
-  <%= f.submit (t "signin"), class: "btn btn-lg btn-primary btn-block" %>
-<% end %>
+<div class="container">
+  <div style="margin: 10% 20%">
+    <%= form_for :session, url: login_path, html: {class: "form-signin"} do |f| %>
+      <legend><%= t "welcome" %></legend>
+      <div class="form-group">
+        <%= f.label :name, (t "username")%>
+        <%= f.text_field :name, class: "form-control", required: true  %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password, (t "pass")%>
+        <%= f.password_field :password, class: "form-control", required: true  %>
+      </div>
+      <%= f.submit (t "signin"), class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
